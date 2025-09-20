@@ -1,0 +1,338 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #1c1c1c;
+}
+
+.container {
+    width: 450px;
+    max-width: 90vw;
+    box-sizing: border-box;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    color: white;
+}
+
+header h1 {
+    font-size: 28px;
+    margin: 0;
+}
+
+.icon {
+    font-size: 22px;
+    margin-left: 10px;
+}
+
+.box {
+    background: black;
+    padding: 15px;
+    border-radius: 16px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+#start-box, #score-box, #wrong-box {
+    background: linear-gradient(#1c1c1c, #1c1c1c) padding-box,
+    linear-gradient(145deg,#8F19C8,#e81cff, #40c9ff,#194BC8) border-box;
+    border: 2px solid transparent;
+    background-size: 200% 100%;
+    animation: gradient 3s ease infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 25px;
+}
+
+h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+button {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 10px;
+    margin: 10px 0;
+    font-size: 22px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    overflow: hidden;
+}
+
+.start-button {
+    width: 60%;
+    font-weight: bold;
+    margin: 10px auto;
+    border-radius: 50px;
+    border: 0;
+    background-color: rgba(115, 220, 24, 1);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: all 0.5s ease;
+}
+.start-button:active {
+    letter-spacing: 3px;
+    background-color: rgba(2, 186, 10, 1);
+    color: hsl(0, 0%, 100%);
+    transform: translateY(10px);
+    transition: 100ms;
+}
+
+
+.blue {
+    background-color: #007bff;
+}
+.blue:hover {
+    background-color: #005bdf;
+}
+.red {
+    background-color: #dc3545;
+}
+.red:hover {
+    background-color: #bc1525;
+}
+.green {
+    background-color: #28a754;
+}
+.green:hover {
+    background-color: #088725;
+}
+
+#options {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 15px 0;
+}
+
+label {
+    color: white;
+    font-size: 20px;
+    margin: 8px 0;
+    display: block;
+    position: relative;
+    cursor: pointer;
+}
+
+#question-count, #time, #voc-select {
+    width: 80px;
+    height: 45px;
+    padding: 5px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 18px;
+    background-color: #222;
+    color: white;
+    box-sizing: border-box;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px;
+}
+.input-group label {
+    margin: 0;
+    flex: 1;
+}
+.input-group input, .input-group select {
+    flex: 1;
+    max-width: 115px;
+    appearance: none;
+}
+
+.input-group input, .input-group select {
+    background-color: #212121;
+    height: 40px;
+    padding: 10px;
+    /* text-align: center; */
+    border: 2px solid white;
+    border-radius: 5px;
+    /* box-shadow: 3px 3px 2px rgb(249, 255, 85); */
+}
+
+.input-group input:hover, .input-group select:hover {
+    color: rgb(0, 255, 255);
+    background-color: #212121;
+    border-color: rgb(0, 255, 255);
+    box-shadow: 2px 2px 15px rgb(0, 255, 255);
+    transition: 0.1s;
+    transition-property: box-shadow;
+}
+
+.flash-red {
+    animation: flashRed 0.7s;
+}
+
+@keyframes flashRed {
+    0% {
+        background-color: #222;
+    }
+    50% {
+        background-color: #dc3545;
+    }
+    100% {
+        background-color: #222;
+    }
+}
+
+.flash-green {
+    animation: flashGreen 0.7s;
+}
+
+@keyframes flashGreen {
+    0% {
+        background-color: #222;
+    }
+    50% {
+        background-color: #28a745;
+    }
+    100% {
+        background-color: #222;
+    }
+}
+
+#quiz-box {
+    position: relative;
+}
+
+#wrong-box {
+    max-height: 600px;
+    overflow-y: auto;
+    border-radius: 16px;
+    padding: 15px;
+    color: white;
+}
+.wrong-item {
+    background: #222;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+}
+.wrong-item p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+#timer {
+    position: absolute;
+    top: 50px;
+    right: 35px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffc107;
+}
+
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple-effect 0.6s linear;
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes ripple-effect {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+button, input, select, textarea, a, label {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-focus-ring-color: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    outline: none;
+    box-shadow: none;
+    user-select: none;
+}
+button::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+#time-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 8px;
+    width: 100%;
+    background: transparent;
+    overflow: hidden;
+}
+#time-bar .bar {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100%;
+    width: 0%;
+    border-radius: 10px;
+    background-color: #28a745;
+}
+
+.circle-wrapper {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 20px;
+}
+.circle {
+    transform: rotate(-90deg);
+}
+.circle .bg {
+    stroke: #444;
+}
+.circle .progress {
+    stroke: #28a745;
+    stroke-dasharray: 0;
+    stroke-dashoffset: 0;
+}
+#score {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+}
+
+#countdown-box {
+    display: flex;
+    padding: 0;
+    height: 400px;
+    font-size: 150px;
+    justify-content: center;
+    align-items: center;
+}

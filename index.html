@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>VocTest</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="vocs.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+
+        <header>
+            <h1>VocTest</h1>
+            <span class="icon">📝</span>
+        </header>
+
+        <main>
+            <div id="start-box" class="box glow">
+
+                <div class="input-group">
+                    <label for="question-count">題數:</label>
+                    <input type="number" id="question-count" min="10" value="10">
+                </div>
+
+                <div class="input-group">
+                    <label for="time">時間限制:</label>
+                    <select id="time">
+                        <option value="">無</option>
+                        <option value="5">5s</option>
+                        <option value="10">10s</option>
+                        <option value="15">15s</option>
+                        <option value="20">20s</option>
+                        <option value="25">25s</option>
+                        <option value="30">30s</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="voc-select">範圍：</label>
+                    <select id="voc-select" multiple>
+                        <option value="voc1">voc1</option>
+                        <option value="voc2">voc2</option>
+                        <option value="voc3">voc3</option>
+                        <option value="voc4">voc4</option>
+                        <option value="voc5">voc5</option>
+                        <option value="voc6">voc6</option>
+                        <option value="voc7">voc7</option>
+                        <option value="voc8">voc8</option>
+                        <option value="confusing">易混淆</option>
+                        <option value="aging_population">人口老化</option>
+                    </select>
+                </div>
+
+                <button id="start" class="start-button">Start</button>
+            </div>
+
+            <div id="countdown-box" class="box" style="display:none">
+                <div id="3" style="display:none">3</div>
+                <div id="2" style="display:none">2</div>
+                <div id="1" style="display:none">1</div>
+                <div id="0" style="display:none">Go!</div>
+            </div>
+            
+            <div id="quiz-box" class="box" style="display:none">
+                <div id="time-bar">
+                    <div class="bar"></div>
+                </div>
+                <h2 id="count">?</h2>
+                <div id="timer"></div>
+                <h1 id="question">?</h1>
+                <div id="options">
+                    <button id="a" class="blue">?</button>
+                    <button id="b" class="blue">?</button>
+                    <button id="c" class="blue">?</button>
+                    <button id="d" class="blue">?</button>
+                </div>
+            </div>
+
+            <div id="score-box" class="box glow" style="display:none">
+                <h1>正確率：</h1>
+                <div class="circle-wrapper">
+                    <svg class="circle" width="180" height="180">
+                        <circle class="bg" cx="90" cy="90" r="80" stroke-width="12" fill="none" />
+                        <circle class="progress" cx="90" cy="90" r="80" stroke-width="12" fill="none" />
+                    </svg>
+                    <div id="score">
+                        0%
+                    </div>
+                </div>
+                <button id="next" class="start-button">Next</button>
+            </div>
+
+            <div id="wrong-box" class="box glow" style="display:none">
+                <h1>錯題回顧</h1>
+                <div id="wrong-review"></div>
+                <button id="restart" class="start-button">Restart</button>
+            </div>
+
+        </main>
+    </div>
+</body>
+</html>
