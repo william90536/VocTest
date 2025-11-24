@@ -110,20 +110,11 @@ button {
 .blue {
     background-color: #007bff;
 }
-.blue:hover {
-    background-color: #005bdf;
-}
 .red {
     background-color: #dc3545;
 }
-.red:hover {
-    background-color: #bc1525;
-}
 .green {
     background-color: #28a754;
-}
-.green:hover {
-    background-color: #088725;
 }
 
 #options {
