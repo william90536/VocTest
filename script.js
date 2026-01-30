@@ -1,4 +1,4 @@
-let vocList = confusing;
+let vocList = [];
 let exclude = [];
 let answer;
 let q;
