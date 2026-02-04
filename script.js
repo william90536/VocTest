@@ -294,7 +294,7 @@ $('#next').click(function() {
 
     let reviewHtml = "";
     if (wrongAnswers.length === 0) {
-        reviewHtml = "<p>🎉 恭喜，全對！</p>";
+        reviewHtml = "<p> 全對！🎉</p>";
     } else {
         wrongAnswers.forEach((item, index) => {
             reviewHtml += `<div class="wrong-item">
