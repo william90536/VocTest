@@ -1,7 +1,7 @@
 let vocList = [];//單字出題範圍
-let exclude = [];//已抽過單字
+let exclude = [];//已當過題目單字
 let answer;//正確答案
-let q, a;//q: 問題語言, a: 答案語言
+let q, a;//q:問題語言, a:答案語言
 let flag = false;//是否已作答
 let totalQuestions = 0;//總題數
 let currentQuestions = 0;//當前題號
@@ -15,19 +15,17 @@ function start() {
     vocList = [];
     wrongAnswers = [];
     
-    // 獲取使用者選取的單字庫名稱
-    let selectedLists = $('#voc-select').val();
+    let selectedLists = $('#voc-select').val();//選取單字庫
     selectedLists.forEach(function(name) {
-        // 從全域變數 window[name] 中合併單字資料
         vocList = vocList.concat(window[name]);
-    });
+    });//合併單字庫
 
     if (vocList.length == 0) {
         alert('請選擇單字庫');
         return;
     }
 
-    // 設定總題數（不可超過單字庫總數）
+    //題數設定
     let input = parseInt($('#question-count').val(), 10) || 10;
     if (isNaN(input) || input < 1) { input = 10; }
     totalQuestions = Math.min(input, vocList.length);
@@ -35,41 +33,39 @@ function start() {
     exclude = [];
     point = 0;
 
-    // 取得計時設定
+    //計時設定
     if ($('#time').val() != '') {
         countdownClock = parseInt($('#time').val(), 10);
     }
 
-    // 切換 UI 介面：隱藏開始盒，顯示倒數動畫
+    //倒數動畫
     $('#start-box').fadeOut(800, function() {
         $('#countdown-box').show();
         startCountdown(function() {
             $('#countdown-box').hide();
             $('#quiz-box').show();
-            question(); // 正式進入第一題
+            question();
         });
     });
 }
 
-/**
- * 出題函數
- */
+//出題
 function question() {
-    // 檢查是否已達到總題數
+    //是否完成測驗
     if (currentQuestions >= totalQuestions) {
         $('#quiz-box').fadeOut(500, function() {
             $('#score-box').fadeIn();
             let score = parseFloat((point * 100 / totalQuestions).toFixed(2));
-            animateResult(score); // 顯示分數動畫
+            animateResult(score);//分數動畫
         });
         return;
     }
 
-    // 初始化按鈕顏色與狀態
+    //初始化按鈕
     $('#a, #b, #c, #d').removeClass('red').removeClass('green').addClass('blue');
     flag = false;
 
-    // 隨機決定題型：中選英 (50%) 或 英選中 (50%)
+    //隨機題型
     let rand = Math.random();
     if (rand < 0.5) {
         q = 'en'; a = 'zh';
@@ -77,11 +73,11 @@ function question() {
         q = 'zh'; a = 'en';
     }
 
-    // 取得一組包含 1 個正確答案與 3 個干擾項的選項陣列
+    //設定題目與選項
     let opt = randomVoc(exclude);
-    $('#question').text(answer[q]); // 顯示題目
+    $('#question').text(answer[q]);//選定題目
 
-    // 顯示四個選項
+    //顯示選項
     $('#a').text(opt[0][a]);
     $('#b').text(opt[1][a]);
     $('#c').text(opt[2][a]);
@@ -90,41 +86,37 @@ function question() {
     currentQuestions++;
     $('#count').text('第' + currentQuestions + '/' + totalQuestions + '題');
 
-    // 如果有設定限時，啟動計時器與進度條
+    //計時器與時間條
     if (countdownClock != '') {
         time = countdownClock;
         $('#timer').text(time + 's');
-        timeBar(); // 動態進度條
+        timeBar();
 
         if (timerID) { clearTimeout(timerID); }
         timerID = setTimeout(countdown, 1000);
     }
 }
 
-/**
- * 抽取隨機單字與生成干擾項
- */
+//設定題目組合
 function randomVoc(exclude) {
-    // 過濾掉已經出現過的單字
+    //過濾已當過題目單字
     let include = vocList.filter(v => !exclude.includes(v));
     let rand = Math.floor(Math.random() * include.length);
-    answer = include[rand]; // 抽中作為正確答案
+    answer = include[rand];//正確答案
     exclude.push(answer);
 
-    // 從所有單字中選出 3 個不同於答案的單字作為干擾項
+    //設定錯誤選項
     let others = vocList.filter(v => v != answer);
     shuffle(others);
     let wrongs = others.slice(0, 3);
 
     let options = [...wrongs, answer];
-    shuffle(options); // 洗牌選項順序
+    shuffle(options);
 
     return options;
 }
 
-/**
- * 陣列隨機排序（洗牌演算法）
- */
+//洗牌
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
@@ -132,20 +124,18 @@ function shuffle(array) {
     }
 }
 
-/**
- * 檢查使用者點選的答案
- */
+//檢查玩家作答
 function check() {
-    if (!flag) { // 確保未進入下一題前只能點一次
+    if (!flag) {
         let chosenText = $(this).text();
         
-        // 判斷是否答錯
+        //判斷是否答錯
         if (chosenText != answer.en && chosenText != answer.zh) {
             $(this).removeClass('blue').addClass('red');
-            flash('flash-red'); // 螢幕閃紅光
+            flash('flash-red');
             clearTimeout(timerID);
 
-            // 紀錄錯題資訊
+            //紀錄錯題
             wrongAnswers.push({
                 question: answer[q],
                 options: [$('#a').text(), $('#b').text(), $('#c').text(), $('#d').text()],
@@ -153,20 +143,19 @@ function check() {
                 chosen: chosenText
             });
         } else {
-            // 答對
-            flash('flash-green'); // 螢幕閃綠光
+            flash('flash-green');
             clearTimeout(timerID);
             point++;
         }
 
-        // 無論對錯，都要標示出「正確答案」的按鈕顏色
+        //顯示正確答案
         $('button').each(function() {
             if ($(this).text() == answer.en || $(this).text() === answer.zh) {
                 $(this).removeClass('blue').addClass('green');
             }
         });
 
-        // 延遲一秒後進入下一題
+        //進入下一題
         setTimeout(function() {
             question();
         }, 1000);
@@ -174,23 +163,21 @@ function check() {
     flag = true;
 }
 
-/**
- * 倒數計時邏輯
- */
+//倒數計時
 function countdown() {
     time--;
     $('#timer').text(time + 's');
 
+    //超時
     if (time <= 0) {
-        flag = true; // 時間到，鎖定點擊
-        // 顯示正確答案
+        flag = true;
         $('button').each(function() {
             if ($(this).text() == answer.en || $(this).text() === answer.zh) {
                 $(this).removeClass('blue').addClass('green');
             }
         });
 
-        // 紀錄為超時答錯
+        //紀錄超時答錯
         wrongAnswers.push({
             question: answer[q],
             options: [$('#a').text(), $('#b').text(), $('#c').text(), $('#d').text()],
@@ -205,9 +192,7 @@ function countdown() {
     }
 }
 
-/**
- * 螢幕閃爍特效
- */
+//閃爍特效
 function flash(flashColor) {
     $('#quiz-box').addClass(flashColor);
     setTimeout(function() {
@@ -215,42 +200,36 @@ function flash(flashColor) {
     }, 500);
 }
 
-/**
- * 重新開始
- */
 function restart() {
     $('#wrong-box').fadeOut(500, function() {
         $('#start-box').fadeIn();
     });
 }
 
-/**
- * 進度條動畫與變色控制
- */
+//時間條動畫
 function timeBar() {
     let bar = $('#time-bar .bar');
 
-    // 清除舊的計時任務
+    //清除計時任務
     let timeouts = bar.data('timeouts') || [];
     timeouts.forEach(id => clearTimeout(id));
     bar.data('timeouts', []);
 
-    // 重設進度條狀態
+    //重設狀態
     bar.css({
         transition: 'none',
         width: '95%',
         backgroundColor: '#28a745'
     });
 
-    bar[0].offsetHeight; // 強制重繪
+    bar[0].offsetHeight;//強制重繪
 
-    // 開始 CSS 寬度縮減動畫
     bar.css({
         transition: `width ${countdownClock}s linear, background-color 0.7s linear`,
         width: '0%'
     });
 
-    // 設定變色門檻：剩餘 70% 變黃，剩餘 30% 變紅
+    //變色
     let warning70 = setTimeout(() => {
         bar.css('background-color', '#ffc107');
     }, countdownClock * 0.3 * 1000);
@@ -262,9 +241,7 @@ function timeBar() {
     bar.data('timeouts', [warning70, warning30]);
 }
 
-/**
- * 分數數字跳動與圓形進度條動畫
- */
+//分數與圓形進度條動畫
 function animateResult(finalScore) {
     let current = 0;
     let step = finalScore / 50;
@@ -277,7 +254,6 @@ function animateResult(finalScore) {
         $('#score').text(parseFloat(current.toFixed(2)) + '%');
     }, 20);
 
-    // SVG 圓形進度條邏輯
     let circle = document.querySelector('.circle .progress');
     let r = 80;
     let circumference = 2 * Math.PI * r;
@@ -286,16 +262,14 @@ function animateResult(finalScore) {
     circle.style.strokeDasharray = circumference;
     circle.style.strokeDashoffset = circumference;
 
-    circle.getBoundingClientRect(); // 強制重繪
+    circle.getBoundingClientRect();//強制重繪
 
     let offset = circumference * (1 - finalScore / 100);
     circle.style.transition = 'stroke-dashoffset 1s ease-out';
     circle.style.strokeDashoffset = offset;
 }
 
-/**
- * 開始前的 3-2-1-0 倒數動畫
- */
+//開始倒數
 function startCountdown(callback) {
     let steps = ['#3', '#2', '#1', '#0'];
     let i = 0;
@@ -314,14 +288,10 @@ function startCountdown(callback) {
     showStep();
 }
 
-/**
- * 事件監聽綁定
- */
 $('#start').click(start);
 $('#a, #b, #c, #d').click(check);
 $('#restart').click(restart);
 
-// 點擊查看錯題詳情
 $('#next').click(function() {
     $('#score-box').fadeOut(500, function() {
         $('#wrong-box').fadeIn();
@@ -344,9 +314,7 @@ $('#next').click(function() {
     $('#wrong-review').html(reviewHtml);
 });
 
-/**
- * 按鈕點擊的漣漪特效 (Ripple Effect)
- */
+//按鈕點擊特效
 $('button').click(function(e) {
     let button = $(this);
     let ripple = $('<span class="ripple"></span>');
